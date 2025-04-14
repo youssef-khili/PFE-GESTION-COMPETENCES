@@ -1,0 +1,42 @@
+<app-filter-card (resultData)="applyFilter($event)"></app-filter-card>
+
+<mat-card>
+
+
+  <div class="dashboard-container mat-elevation-z8" tabindex="0">
+    <table [dataSource]="dataSource" mat-table matSort>
+      <ng-container matColumnDef="user" sticky>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> User</th>
+        <td *matCellDef="let element" class="mat-table-sticky-border-elem-left" mat-cell> {{element.user}}</td>
+      </ng-container>
+
+      <ng-container *ngFor="let colum of skillsColumns" [matColumnDef]="colum">
+        <th *matHeaderCellDef class="skill-cell" mat-header-cell mat-sort-header> {{colum}}</th>
+        <td *matCellDef="let element" mat-cell>
+          <span *ngIf="element[colum] !== undefined && element[colum].level !== undefined">
+          <ngb-rating [(rate)]="element[colum].level"
+                      [pTooltip]="element[colum].level+' out of 4'"
+                      [readonly]="true"
+                      max="4">
+          </ngb-rating>
+          </span>
+          <span *ngIf="element[colum] === undefined">---</span>
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" [class.bg-grey]='!row.enabled' mat-row></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="4">No data available</td>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 [pageSize]="10"
+                 aria-label="Select page of periodic elements"
+                 showFirstLastButtons>
+  </mat-paginator>
+
+</mat-card>

@@ -1,0 +1,83 @@
+<p-messages [value]="msgs"></p-messages>
+<mat-card>
+  <div class="table-header">
+   <span>
+   </span>
+    <span class="p-input-icon-left" *ngIf="connectedUserRole !== 'USER'">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" placeholder="Search User" (keyup)="applyFilter($event)" #input />
+                    </span>
+  </div>
+
+<table mat-table
+       [dataSource]="dataSource"
+       multiTemplateDataRows
+       matSort
+       class="mat-elevation-z8">
+
+  <ng-container matColumnDef="firstName" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="d-flex">
+        <span class="name-initials">{{element.firstName[0]|uppercase}} {{element.lastName[0]|uppercase}}</span>
+        <div class="m-l-15 center-element">
+          <p class="font-medium ">{{ element.firstName+' '+element.lastName}}</p>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="department" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
+    <td mat-cell *matCellDef="let element"> {{element.Department.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="function" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Function </th>
+    <td mat-cell *matCellDef="let element"> {{element.Function.name}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">visibility</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">visibility_off</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail"
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+      <!--  <div class="example-element-diagram">
+          <div class="example-element-position"> <strong>Skills</strong> </div>
+          <mat-divider></mat-divider>
+        </div>-->
+        <div class="example-element-description" [hidden]="!element">
+          <app-skills-list [userId]="element.id"
+                           (resultMsg)="displayMsg($event)"
+          ></app-skills-list>
+        </div  >
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  <tr *matNoDataRow class="mat-row">
+    <td class="mat-cell" colspan="4">No data available </td>
+  </tr>
+</table>
+  <mat-paginator *ngIf="connectedUserRole !== 'USER' && connectedUserRole !== 'ADMIN' "
+                 [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</mat-card>

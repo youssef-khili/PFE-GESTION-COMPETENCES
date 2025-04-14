@@ -1,0 +1,16 @@
+.mat-card{
+  height: 100px;
+}
+.mat-form-field{
+  font-size: 12px;
+}
+.filter-content {
+  height: 90px;
+  padding: 20px;
+}
+:host ::ng-deep {
+
+  .p-button-info {
+    margin-top: 4px;
+  }
+}

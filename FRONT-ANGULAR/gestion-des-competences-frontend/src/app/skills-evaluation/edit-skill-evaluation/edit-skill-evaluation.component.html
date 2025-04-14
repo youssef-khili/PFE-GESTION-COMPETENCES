@@ -1,0 +1,31 @@
+<div mat-dialog-title>Edit Evaluation
+  <button (click)="closeDialog('')" class="close-dialog"><mat-icon  >close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="p-fluid  p-grid">
+      <p-messages [value]="msgs" class="error"></p-messages>
+      <div class="p-field p-col-12 ">
+        <label  >Level :   <span class="level">{{currentRate}} Out of {{maxStar}} starts </span>
+        </label>
+        <br>
+        <ngb-rating class="star" [(rate)]="currentRate" (rateChange)="onRate($event)" [max]="maxStar"></ngb-rating>
+        <br>
+      </div>
+      <div class="p-field p-col-12">
+        <label for="evaluationEvidence">Evaluation Evidence</label>
+        <textarea id="evaluationEvidence" type="text" pInputTextarea formControlName="evaluationEvidence" ></textarea>
+
+      </div>
+
+
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button pButton pRipple label="Submit" type="submit" (click)="onSubmit()"  class="p-button-info p-col-6 p-md-6 "></button>
+  <button pButton pRipple  label="Cancel" (click)="cancel()" class="p-button-secondary p-col-6 p-md-6 "></button>
+
+</div>
+
